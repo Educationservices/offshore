@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offshore - Unsupported Mobile Devices</title>
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --secondary: #10b981;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+            padding: 1rem 0;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .logo svg {
+            height: 2rem;
+            width: 2rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .download-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+        
+        .download-btn:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .page-content {
+            padding: 8rem 0 4rem;
+            min-height: 100vh;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .page-header p {
+            color: #94a3b8;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .search-container {
+            background-color: rgba(30, 41, 59, 0.7);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .search-header {
+            margin-bottom: 1.5rem;
+        }
+        
+        .search-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        @media (min-width: 768px) {
+            .search-form {
+                flex-direction: row;
+                align-items: flex-end;
+            }
+        }
+        
+        .form-group {
+            flex: 1;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input, 
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #4b5563;
+            background-color: rgba(15, 23, 42, 0.8);
+            color: var(--light);
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus, 
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+        }
+        
+        .search-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            min-width: 120px;
+        }
+        
+        .search-btn:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .reset-btn {
+            background-color: transparent;
+            color: #94a3b8;
+            border: 1px solid #4b5563;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 120px;
+        }
+        
+        .reset-btn:hover {
+            background-color: rgba(75, 85, 99, 0.1);
+            color: var(--light);
+        }
+        
+        .device-list {
+            background-color: rgba(30, 41, 59, 0.7);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .device-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .device-list-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .device-count {
+            padding: 0.25rem 0.75rem;
+            background-color: rgba(59, 130, 246, 0.2);
+            border-radius: 9999px;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        
+        .device-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .device-table th,
+        .device-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #4b5563;
+        }
+        
+        .device-table th {
+            font-weight: 600;
+            color: #94a3b8;
+            white-space: nowrap;
+        }
+        
+        .device-table tbody tr {
+            transition: background-color 0.3s;
+        }
+        
+        .device-table tbody tr:hover {
+            background-color: rgba(75, 85, 99, 0.1);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background-color: rgba(220, 38, 38, 0.2);
+            border-radius: 9999px;
+            color: #ef4444;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: #94a3b8;
+        }
+        
+        footer {
+            background-color: #0f172a;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+        
+        .copyright {
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+        
+        @media (max-width: 768px) {
+            .device-table th:nth-child(2),
+            .device-table td:nth-child(2) {
+                display: none;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .device-table th:nth-child(4),
+            .device-table td:nth-child(4) {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 9L12 5L21 9L12 13L3 9Z" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M21 9V15" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M7 11.5V16.5C7 17.6046 9.23858 19 12 19C14.7614 19 17 17.6046 17 16.5V11.5" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Offshore</span>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="index.html#features">Features</a>
+                    <a href="https://github.com/Educationservices/offshore/releases/download/Alpha/offshore.zip" class="active">Download</a>
+                </div>
+                <a href="https://github.com/Educationservices/offshore/releases/download/Alpha/offshore.zip" class="download-btn">Download</a>
+            </nav>
+        </div>
+    </header>
+    
+    <section class="page-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>Unsupported Mobile Devices</h1>
+                <p>Check if your Mobile device is compatible with Offshore. The following devices will NEVER work.</p>
+            </div>
+            
+            <div class="search-container">
+                <div class="search-header">
+                    <h2>Find Your Device</h2>
+                </div>
+                <div class="search-form">
+                    <div class="form-group">
+                        <label for="search">Search Device Name</label>
+                        <input type="text" id="search" placeholder="e.g. Samsung Galaxy S10">
+                    </div>
+                    <div class="form-group">
+                        <label for="manufacturer">Manufacturer</label>
+                        <select id="manufacturer">
+                            <option value="">All Manufacturers</option>
+                            <!-- Will be populated with JavaScript -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="year">Year</label>
+                        <select id="year">
+                            <option value="">All Years</option>
+                            <!-- Will be populated with JavaScript -->
+                        </select>
+                    </div>
+                    <button class="search-btn" id="searchBtn">Search</button>
+                    <button class="reset-btn" id="resetBtn">Reset</button>
+                </div>
+            </div>
+            
+            <div class="device-list">
+                <div class="device-list-header">
+                    <h2>Unsupported Devices</h2>
+                    <div class="device-count" id="deviceCount">0 devices</div>
+                </div>
+                <table class="device-table">
+                    <thead>
+                        <tr>
+                            <th>Device Name</th>
+                            <th>Manufacturer</th>
+                            <th>Year</th>
+                            <th>OS Version (On release)</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="deviceTableBody">
+                        <!-- Will be populated with JavaScript -->
+                    </tbody>
+                </table>
+                <div class="no-results" id="noResults" style="display: none;">
+                    <p>No devices found matching your search criteria.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+            </div>
+            <div class="copyright">
+                © 2025 Offshore. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+const unsupportedDevices = [
+    // Apple
+    { name: "iPhone 3GS", manufacturer: "Apple", year: "2009", androidVersion: "iOS 3.0" },
+    { name: "iPhone 4", manufacturer: "Apple", year: "2010", androidVersion: "iOS 4.0" },
+    { name: "iPhone 4S", manufacturer: "Apple", year: "2011", androidVersion: "iOS 5.0" },
+    { name: "iPhone 5", manufacturer: "Apple", year: "2012", androidVersion: "iOS 6.0" },
+    { name: "iPhone 5C", manufacturer: "Apple", year: "2013", androidVersion: "iOS 7.0" },
+
+    // Samsung
+    { name: "Galaxy S", manufacturer: "Samsung", year: "2010", androidVersion: "2.1" },
+    { name: "Galaxy S2", manufacturer: "Samsung", year: "2011", androidVersion: "4.1" },
+    { name: "Galaxy S3", manufacturer: "Samsung", year: "2012", androidVersion: "4.3" },
+    { name: "Galaxy Note", manufacturer: "Samsung", year: "2011", androidVersion: "4.1" },
+    { name: "Galaxy Note 2", manufacturer: "Samsung", year: "2012", androidVersion: "4.4" },
+    { name: "Galaxy Grand", manufacturer: "Samsung", year: "2013", androidVersion: "4.2" },
+    { name: "Galaxy Core", manufacturer: "Samsung", year: "2013", androidVersion: "4.1" },
+    { name: "Galaxy Ace", manufacturer: "Samsung", year: "2011", androidVersion: "2.3" },
+    { name: "Galaxy Y", manufacturer: "Samsung", year: "2011", androidVersion: "2.3" },
+    { name: "Galaxy Pocket", manufacturer: "Samsung", year: "2012", androidVersion: "2.3" },
+    { name: "Galaxy Mini 2", manufacturer: "Samsung", year: "2012", androidVersion: "2.3" },
+
+    // HTC
+    { name: "HTC Desire HD", manufacturer: "HTC", year: "2010", androidVersion: "2.3" },
+    { name: "HTC Desire Z", manufacturer: "HTC", year: "2010", androidVersion: "2.3" },
+    { name: "HTC One X", manufacturer: "HTC", year: "2012", androidVersion: "4.2" },
+    { name: "HTC Sensation", manufacturer: "HTC", year: "2011", androidVersion: "4.0" },
+    { name: "HTC Wildfire", manufacturer: "HTC", year: "2010", androidVersion: "2.2" },
+    { name: "HTC Wildfire S", manufacturer: "HTC", year: "2011", androidVersion: "2.3" },
+    { name: "HTC Hero", manufacturer: "HTC", year: "2009", androidVersion: "2.1" },
+    { name: "HTC Desire 500", manufacturer: "HTC", year: "2013", androidVersion: "4.1" },
+    { name: "HTC Desire 600", manufacturer: "HTC", year: "2013", androidVersion: "4.2" },
+
+    // Sony
+    { name: "Xperia Arc", manufacturer: "Sony", year: "2011", androidVersion: "4.0" },
+    { name: "Xperia Play", manufacturer: "Sony", year: "2011", androidVersion: "2.3" },
+    { name: "Xperia Neo", manufacturer: "Sony", year: "2011", androidVersion: "4.0" },
+    { name: "Xperia Ray", manufacturer: "Sony", year: "2011", androidVersion: "4.0" },
+    { name: "Xperia Z", manufacturer: "Sony", year: "2013", androidVersion: "5.1" },
+    { name: "Xperia Z1", manufacturer: "Sony", year: "2013", androidVersion: "5.1" },
+    { name: "Xperia Z1 Compact", manufacturer: "Sony", year: "2014", androidVersion: "5.1" },
+    { name: "Xperia M", manufacturer: "Sony", year: "2013", androidVersion: "4.3" },
+    { name: "Xperia M2", manufacturer: "Sony", year: "2014", androidVersion: "5.1" },
+    { name: "Xperia E", manufacturer: "Sony", year: "2013", androidVersion: "4.1" },
+    { name: "Xperia E1", manufacturer: "Sony", year: "2014", androidVersion: "4.3" },
+    { name: "Xperia E3", manufacturer: "Sony", year: "2014", androidVersion: "4.4" },
+    { name: "Xperia L", manufacturer: "Sony", year: "2013", androidVersion: "4.2" },
+    { name: "Xperia SP", manufacturer: "Sony", year: "2013", androidVersion: "4.3" },
+
+    // Motorola
+    { name: "Moto G (1st Gen)", manufacturer: "Motorola", year: "2013", androidVersion: "5.1" },
+    { name: "Moto E (1st Gen)", manufacturer: "Motorola", year: "2014", androidVersion: "5.1" },
+    { name: "Droid RAZR", manufacturer: "Motorola", year: "2011", androidVersion: "4.1" },
+    { name: "Motorola Defy", manufacturer: "Motorola", year: "2010", androidVersion: "2.2" },
+    { name: "Motorola Atrix", manufacturer: "Motorola", year: "2011", androidVersion: "4.0" },
+
+    // LG
+    { name: "LG Optimus One", manufacturer: "LG", year: "2010", androidVersion: "2.3" },
+    { name: "LG Optimus 2X", manufacturer: "LG", year: "2011", androidVersion: "4.0" },
+    { name: "LG Optimus L3", manufacturer: "LG", year: "2012", androidVersion: "4.1" },
+    { name: "LG Optimus L5", manufacturer: "LG", year: "2012", androidVersion: "4.1" },
+    { name: "LG Optimus L7", manufacturer: "LG", year: "2012", androidVersion: "4.1" },
+    { name: "LG Optimus L9", manufacturer: "LG", year: "2012", androidVersion: "4.1" },
+    { name: "LG G2 Mini", manufacturer: "LG", year: "2014", androidVersion: "5.0" },
+    { name: "LG Nexus 4", manufacturer: "LG", year: "2012", androidVersion: "5.1" },
+
+    // Google Nexus
+    { name: "Nexus One", manufacturer: "Google", year: "2010", androidVersion: "2.3" },
+    { name: "Nexus S", manufacturer: "Google", year: "2010", androidVersion: "4.1" },
+    { name: "Galaxy Nexus", manufacturer: "Samsung", year: "2011", androidVersion: "4.3" },
+    { name: "Nexus 4", manufacturer: "LG", year: "2012", androidVersion: "5.1" },
+
+    // Huawei
+    { name: "Ascend Y300", manufacturer: "Huawei", year: "2013", androidVersion: "4.1" },
+    { name: "Ascend G300", manufacturer: "Huawei", year: "2012", androidVersion: "4.0" },
+    { name: "Ascend G510", manufacturer: "Huawei", year: "2013", androidVersion: "4.1" },
+    { name: "Ascend G610", manufacturer: "Huawei", year: "2013", androidVersion: "4.2" },
+    { name: "Ascend P6", manufacturer: "Huawei", year: "2013", androidVersion: "4.4" },
+    { name: "Ascend P7", manufacturer: "Huawei", year: "2014", androidVersion: "5.1" },
+
+    // ZTE
+    { name: "ZTE Blade", manufacturer: "ZTE", year: "2010", androidVersion: "2.2" },
+    { name: "ZTE Skate", manufacturer: "ZTE", year: "2011", androidVersion: "2.3" },
+    { name: "ZTE Racer", manufacturer: "ZTE", year: "2010", androidVersion: "2.1" },
+
+    // Xiaomi
+    { name: "Xiaomi Mi 1", manufacturer: "Xiaomi", year: "2011", androidVersion: "2.3" },
+    { name: "Xiaomi Mi 2", manufacturer: "Xiaomi", year: "2012", androidVersion: "5.0" },
+
+    // Alcatel
+    { name: "OneTouch OT-990", manufacturer: "Alcatel", year: "2011", androidVersion: "2.2" },
+    { name: "OneTouch Pop C1", manufacturer: "Alcatel", year: "2013", androidVersion: "4.2" },
+    { name: "OneTouch Pop C3", manufacturer: "Alcatel", year: "2013", androidVersion: "4.2" },
+
+    // Micromax
+    { name: "Canvas A1", manufacturer: "Micromax", year: "2014", androidVersion: "6.0" },
+    { name: "Canvas HD", manufacturer: "Micromax", year: "2013", androidVersion: "4.2" },
+    { name: "Canvas 2", manufacturer: "Micromax", year: "2012", androidVersion: "4.0" },
+
+    // Karbonn
+    { name: "Titanium S1", manufacturer: "Karbonn", year: "2013", androidVersion: "4.1" },
+    { name: "Titanium S5", manufacturer: "Karbonn", year: "2013", androidVersion: "4.1" },
+
+    // Spice
+    { name: "Spice Dream UNO", manufacturer: "Spice", year: "2014", androidVersion: "5.1" },
+    { name: "Spice Stellar Mi-508", manufacturer: "Spice", year: "2014", androidVersion: "4.4" }
+];
+
+
+        // DOM elements
+        const searchInput = document.getElementById('search');
+        const manufacturerSelect = document.getElementById('manufacturer');
+        const yearSelect = document.getElementById('year');
+        const searchBtn = document.getElementById('searchBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const deviceTableBody = document.getElementById('deviceTableBody');
+        const deviceCount = document.getElementById('deviceCount');
+        const noResults = document.getElementById('noResults');
+
+        // Initialize the page
+        function init() {
+            populateFilters();
+            renderDeviceTable(unsupportedDevices);
+            setupEventListeners();
+        }
+
+        // Populate filter dropdowns
+        function populateFilters() {
+            const manufacturers = [...new Set(unsupportedDevices.map(device => device.manufacturer))].sort();
+            const years = [...new Set(unsupportedDevices.map(device => device.year))].sort((a, b) => b - a);
+
+            manufacturers.forEach(manufacturer => {
+                const option = document.createElement('option');
+                option.value = manufacturer;
+                option.textContent = manufacturer;
+                manufacturerSelect.appendChild(option);
+            });
+
+            years.forEach(year => {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                yearSelect.appendChild(option);
+            });
+        }
+
+        // Render the device table
+        function renderDeviceTable(devices) {
+            deviceTableBody.innerHTML = '';
+            
+            if (devices.length === 0) {
+                noResults.style.display = 'block';
+                deviceCount.textContent = '0 devices';
+                return;
+            }
+
+            noResults.style.display = 'none';
+            deviceCount.textContent = `${devices.length} device${devices.length !== 1 ? 's' : ''}`;
+
+            devices.forEach(device => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${device.name}</td>
+                    <td>${device.manufacturer}</td>
+                    <td>${device.year}</td>
+                    <td>${device.androidVersion}</td>
+                    <td><span class="status-badge">Unsupported</span></td>
+                `;
+                
+                deviceTableBody.appendChild(row);
+            });
+        }
+
+        // Filter devices based on search criteria
+        function filterDevices() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const selectedManufacturer = manufacturerSelect.value;
+            const selectedYear = yearSelect.value;
+
+            const filteredDevices = unsupportedDevices.filter(device => {
+                const matchesSearch = device.name.toLowerCase().includes(searchTerm) || 
+                                    device.manufacturer.toLowerCase().includes(searchTerm);
+                const matchesManufacturer = !selectedManufacturer || device.manufacturer === selectedManufacturer;
+                const matchesYear = !selectedYear || device.year === selectedYear;
+
+                return matchesSearch && matchesManufacturer && matchesYear;
+            });
+
+            renderDeviceTable(filteredDevices);
+        }
+
+        // Reset all filters
+        function resetFilters() {
+            searchInput.value = '';
+            manufacturerSelect.value = '';
+            yearSelect.value = '';
+            renderDeviceTable(unsupportedDevices);
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            searchBtn.addEventListener('click', filterDevices);
+            resetBtn.addEventListener('click', resetFilters);
+            
+            // Enable search on Enter key
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    filterDevices();
+                }
+            });
+        }
+
+        // Run initialization
+        init();
+    </script>
+</body>
+</html>
