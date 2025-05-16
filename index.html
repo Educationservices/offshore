@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offshore - Personalized Videos, Offline</title>
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --secondary: #10b981;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+            padding: 1rem 0;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .logo svg {
+            height: 2rem;
+            width: 2rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .download-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+        
+        .download-btn:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .hero {
+            background: linear-gradient(to bottom right, #1e293b, #0f172a);
+            padding: 8rem 0 4rem;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        
+        .hero-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+        
+        .hero-text {
+            flex: 1;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        
+        h1 span {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero-text p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            color: #94a3b8;
+        }
+        
+        .hero-btns {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .secondary-btn {
+            background-color: transparent;
+            color: var(--light);
+            border: 1px solid #4b5563;
+            padding: 0.5rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        .secondary-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .hero-img {
+            flex: 1;
+            position: relative;
+            height: 500px;
+        }
+        
+        .phone-mockup {
+            position: absolute;
+            width: 250px;
+            height: 500px;
+            border-radius: 30px;
+            border: 8px solid #1f2937;
+            background-color: #000;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        
+        .phone-1 {
+            left: 0;
+            top: 0;
+            z-index: 3;
+            transform: rotate(-5deg);
+        }
+        
+        .phone-2 {
+            left: 100px;
+            top: 30px;
+            z-index: 2;
+        }
+        
+        .phone-3 {
+            left: 200px;
+            top: 0;
+            z-index: 1;
+            transform: rotate(5deg);
+        }
+        
+        .mockup-content {
+            height: 100%;
+            width: 100%;
+            background-color: #000;
+            position: relative;
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .video-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 15px;
+            z-index: 2;
+        }
+        
+        .video-info {
+            position: absolute;
+            bottom: 70px;
+            left: 15px;
+            z-index: 2;
+        }
+        
+        .video-info h4 {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .video-info p {
+            font-size: 0.7rem;
+            color: #94a3b8;
+        }
+        
+        .platform-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .platform-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 9999px;
+        }
+
+        .features {
+            padding: 6rem 0;
+            background-color: #0f172a;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .section-header p {
+            color: #94a3b8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background-color: rgba(30, 41, 59, 0.5);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .feature-icon {
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(59, 130, 246, 0.1);
+            color: var(--primary);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card p {
+            color: #94a3b8;
+        }
+        
+        .how-it-works {
+            padding: 6rem 0;
+            background-color: #1e293b;
+        }
+        
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .step {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+        
+        .step-number {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        
+        .step-content h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .step-content p {
+            color: #94a3b8;
+        }
+
+        .cta {
+            padding: 6rem 0;
+            background: linear-gradient(to bottom right, #1e293b, #0f172a);
+            text-align: center;
+        }
+        
+        .cta h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta p {
+            color: #94a3b8;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+        
+        footer {
+            background-color: #0f172a;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+        
+        .copyright {
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-content {
+                flex-direction: column;
+            }
+            
+            .hero-img {
+                order: -1;
+                height: 400px;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                margin-bottom: 2rem;
+            }
+            
+            .phone-mockup {
+                position: relative;
+                margin: 0 auto;
+            }
+            
+            .phone-1 {
+                left: auto;
+            }
+            
+            .phone-2, .phone-3 {
+                display: none;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 9L12 5L21 9L12 13L3 9Z" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M21 9V15" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M7 11.5V16.5C7 17.6046 9.23858 19 12 19C14.7614 19 17 17.6046 17 16.5V11.5" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Offshore</span>
+                </div>
+                <div class="nav-links">
+                    <a href="#features">Features</a>
+                    <a href="https://github.com/Educationservices/offshore/releases/download/Alpha/offshore.zip">Download</a>
+                    
+                </div>
+                <a href="https://github.com/Educationservices/offshore/releases/download/Alpha/offshore.zip" class="download-btn">Download</a>
+            </nav>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Your <span>Personalized</span> Short Videos. <span>Offline.</span></h1>
+                    <p>Offshore is a YouTube Shorts clone that works completely offline. No WiFi needed. Just your favorite content, personalized to you.</p>
+                    <div class="hero-btns">
+                       <a href="https://github.com/Educationservices/offshore/releases/download/Alpha/offshore.zip" class="download-btn">
+  Download Now<br><span style="font-size: smaller;">Alpha 0.01</span>
+</a>
+						
+                    </div>
+                    <div class="platform-badges">
+                        <div class="platform-badge">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M17.5236 9.75844C17.4603 9.81027 15.1072 11.124 15.1072 13.5052C15.1072 16.2581 18.0211 17.4276 18.0844 17.4528C18.0709 17.5312 17.6439 19.0714 16.5245 20.6378C15.5297 22.006 14.4975 23.3658 12.9643 23.3658C11.4312 23.3658 11.0123 22.4797 9.26754 22.4797C7.5832 22.4797 6.92424 23.3826 5.53027 23.3826C4.1363 23.3826 2.99687 21.8927 1.94379 20.5413C0.680226 18.8889 -0.361131 16.2329 -0.361131 13.6957C-0.361131 9.3812 2.40836 6.96548 5.14304 6.96548C6.62557 6.96548 7.83576 7.93279 8.74249 7.93279C9.6071 7.93279 10.9736 6.9066 12.6579 6.9066C13.3874 6.9066 15.6736 6.96548 17.5236 9.75844ZM12.5744 4.14451C13.2786 3.32051 13.7643 2.18933 13.7643 1.05816C13.7643 0.927885 13.7508 0.797618 13.7237 0.694092C12.5946 0.740963 11.2687 1.48283 10.4676 2.39333C9.8304 3.10451 9.24297 4.23568 9.24297 5.38028C9.24297 5.52399 9.26959 5.6677 9.28293 5.71448C9.3471 5.72795 9.45203 5.74143 9.55695 5.74143C10.5518 5.74143 11.8305 5.02854 12.5744 4.14451Z"/>
+                            </svg>
+                            iOS
+                        </div>
+                        <div class="platform-badge">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M17.6,9.48l1.84-3.18c0.16-0.31,0.04-0.69-0.26-0.85c-0.29-0.15-0.65-0.06-0.83,0.22l-1.88,3.24 c-2.86-1.21-6.08-1.21-8.94,0L5.65,5.67c-0.19-0.29-0.58-0.38-0.87-0.2C4.5,5.65,4.41,6.01,4.56,6.3L6.4,9.48 C3.3,11.25,1.28,14.44,1,18h22C22.72,14.44,20.7,11.25,17.6,9.48z M7,15.25c-0.69,0-1.25-0.56-1.25-1.25 c0-0.69,0.56-1.25,1.25-1.25S8.25,13.31,8.25,14C8.25,14.69,7.69,15.25,7,15.25z M17,15.25c-0.69,0-1.25-0.56-1.25-1.25 c0-0.69,0.56-1.25,1.25-1.25s1.25,0.56,1.25,1.25C18.25,14.69,17.69,15.25,17,15.25z"/>
+                            </svg>
+                            Android
+                        </div>
+                        <div class="platform-badge">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/>
+                            </svg>
+                            Windows
+                        </div>
+                        <div class="platform-badge">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 1.875c-5.613 0-10.125 4.512-10.125 10.125s4.512 10.125 10.125 10.125 10.125-4.512 10.125-10.125-4.512-10.125-10.125-10.125zm-3.375 18.862c-2.231-.725-4.153-2.231-5.288-4.217l-.046-.017c-.404-.691-.737-1.433-.942-2.219.044.001.086.016.131.016 1.256 0 2.812-.942 3.487-2.411-2.384-.241-3.656-2.935-2.623-4.95-.1 3.95 2.434 6.262 5.839 6.572.412-1.494 1.778-2.587 3.396-2.587 1.72 0 3.106 1.255 3.538 2.9 2.06.134 3.818-1.517 4.267-3.396.239.644.391 1.329.438 2.043-1.548 2.414-3.978 3.768-5.926 3.768-1.496-.001-3.175-.947-3.621-2.081-.131.787-.87 1.324-1.717 1.324-.321 0-.599-.12-.834-.291.062 1.669.43 3.305 1.04 4.763-.381.105-.785.174-1.139.783z"/>
+                            </svg>
+                            Linux
+                        </div>
+                        <div class="platform-badge">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 1.875c-5.613 0-10.125 4.512-10.125 10.125s4.512 10.125 10.125 10.125 10.125-4.512 10.125-10.125-4.512-10.125-10.125-10.125zm0 19.256c-5.016 0-9.131-4.115-9.131-9.131s4.115-9.131 9.131-9.131 9.131 4.115 9.131 9.131-4.115 9.131-9.131 9.131z"/>
+                                <path d="M12 10.811c-.798 0-1.447.648-1.447 1.447s.648 1.447 1.447 1.447 1.447-.648 1.447-1.447-.649-1.447-1.447-1.447z"/>
+                                <path d="M17.235 15.147c-.034-.035-3.48-3.017-5.235-3.017s-5.201 2.982-5.235 3.017c-.114.114-.114.298 0 .412.057.057.132.086.206.086s.149-.029.206-.086c.023-.023 2.369-2.699 4.823-2.699s4.8 2.676 4.823 2.699c.114.114.298.114.412 0 .114-.114.114-.299 0-.412z"/>
+                            </svg>
+                            MacOS
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-img">
+                    <div class="phone-mockup phone-1">
+                        <div class="mockup-content">
+                            <img src="https://github.com/Educationservices/offshore/blob/main/example2.png?raw=true" alt="placeholder" class="video-placeholder" />
+                            <div class="video-info">
+                                
+                            </div>
+                            <div class="video-controls">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                              
+                                </svg>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                                    
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="phone-mockup phone-2">
+                        <div class="mockup-content">
+                            <img src="https://github.com/Educationservices/offshore/blob/main/examples.png?raw=true" alt="placeholder" class="video-placeholder" />
+                        </div>
+                    </div>
+                    <div class="phone-mockup phone-3">
+                        <div class="mockup-content">
+                            <img src="https://github.com/Educationservices/offshore/blob/main/example3.png?raw=true" alt="placeholder" class="video-placeholder" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Choose Offshore?</h2>
+                <p>Experience short-form videos without the distractions and constraints of online platforms.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z" />
+                            <path d="M9 12L11 14L15 10" />
+                        </svg>
+                    </div>
+                    <h3>100% Offline</h3>
+                    <p>Watch your favorite content anytime, anywhere - no internet connection required.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2Z" />
+                            <path d="M12 6V12L16 14" />
+                        </svg>
+                    </div>
+                    <h3>Save Time</h3>
+                    <p>Custom algorithms deliver only content you'll love, saving you from endless scrolling.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12Z" />
+                            <path d="M20 17.52C20 16.02 19.33 14.63 18.16 13.63C17.29 12.83 16.2 12.36 15.06 12.14C14.07 11.84 13.06 11.84 12.18 12.14C10.94 12.36 9.72 12.99 8.84 13.63C7.66 14.62 7 16.02 7 17.52V20H20V17.52Z" />
+                        </svg>
+                    </div>
+                    <h3>Personalized Experience</h3>
+                    <p>Choose the channels you like, one time setup with Wi-FI, then done.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15.9999V7.9999C20.9996 7.64918 20.9071 7.30471 20.7315 7.00106C20.556 6.69742 20.3037 6.44526 20 6.2699L13 2.2699C12.696 2.09437 12.3511 2.00152 12 2.00152C11.6489 2.00152 11.304 2.09437 11 2.2699L4 6.2699C3.69626 6.44526 3.44398 6.69742 3.26846 7.00106C3.09294 7.30471 3.00036 7.64918 3 7.9999V15.9999C3.00036 16.3506 3.09294 16.6951 3.26846 16.9987C3.44398 17.3024 3.69626 17.5545 4 17.7299L11 21.7299C11.304 21.9054 11.6489 21.9983 12 21.9983C12.3511 21.9983 12.696 21.9054 13 21.7299L20 17.7299C20.3037 17.5545 20.556 17.3024 20.7315 16.9987C20.9071 16.6951 20.9996 16.3506 21 15.9999Z" />
+                            <path d="M3.27002 6.96L12 12.01L20.73 6.96" />
+                            <path d="M12 22.08V12" />
+                        </svg>
+                    </div>
+                    <h3>Cross-Platform</h3>
+                    <p>Available on Android, iOS, Windows, Linux, and MacOS - sync your content across all devices.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 15C15.866 15 19 12.3137 19 9C19 5.68629 15.866 3 12 3C8.13401 3 5 5.68629 5 9C5 12.3137 8.13401 15 12 15Z" />
+                            <path d="M12 15V21" />
+                            <path d="M9 18H15" />
+                        </svg>
+                    </div>
+                    <h3>Battery Friendly</h3>
+                    <p>Uses less battery than streaming apps, perfect for long trips or low-battery situations.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                            <polyline points="21 15 16 10 5 21"></polyline>
+                        </svg>
+                    </div>
+                    <h3>Ad-Free Experience</h3>
+                    <p>Enjoy your content without interruptions. No ads, no popups, just pure entertainment.</p>
+                </div>
