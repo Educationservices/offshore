@@ -1,8 +1,13 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
 echo "[+] Checking and installing required packages..."
+pkg install -y tur-repo
+pkg install -y python3.11
 
-command -v curl >/dev/null 2>&1 || pkg install curl -y command -v unzip >/dev/null 2>&1 || pkg install unzip -ycommand -v python3.11 >/dev/null 2>&1 || pkg install python3.11 -y [ -d "$PREFIX/etc/tur" ] || pkg install tur-repo -y
+command -v curl >/dev/null 2>&1 || pkg install -y curl
+command -v unzip >/dev/null 2>&1 || pkg install -y unzip
+command -v python3.11 >/dev/null 2>&1 || pkg install -y python3.11
+[ -d "$PREFIX/etc/tur" ] || pkg install -y tur-repo
 
 echo "[+] Ensuring pip is installed for Python 3.11..." python3.11 -m ensurepip --upgrade
 
@@ -10,7 +15,7 @@ echo "[+] Installing yt-dlp if not present..." python3.11 -m pip show yt-dlp >/d
 
 echo "[+] Downloading offshore.zip if not already downloaded..."
 
-[ -f offshore.zip ] || curl -L -o offshore.zip https://github.com/Educationservices/offshore/releases/download/Alpha/offshore.zip
+[ -f offshore.zip ] || curl -L -o offshore.zip https://github.com/Educationservices/offshore/releases/download/Alpha0.02/offshore.zip
 
 echo "[+] Unzipping offshore.zip if folder doesn't exist..."
 
