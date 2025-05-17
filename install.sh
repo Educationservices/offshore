@@ -1,43 +1,29 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-echo "[+] Updating packages..."
-pkg update -y && pkg upgrade -y
+echo "[+] Checking and installing required packages..."
 
-echo "[+] Installing tur-repo..."
-pkg install tur-repo -y
+command -v curl >/dev/null 2>&1 || pkg install curl -y command -v unzip >/dev/null 2>&1 || pkg install unzip -ycommand -v python3.11 >/dev/null 2>&1 || pkg install python3.11 -y [ -d "$PREFIX/etc/tur" ] || pkg install tur-repo -y
 
-echo "[+] Installing Python 3.11..."
-pkg install python3.11 -y
+echo "[+] Ensuring pip is installed for Python 3.11..." python3.11 -m ensurepip --upgrade
 
-echo "[+] Installing unzip and curl..."
-pkg install unzip curl -y
+echo "[+] Installing yt-dlp if not present..." python3.11 -m pip show yt-dlp >/dev/null 2>&1 || python3.11 -m pip install yt-dlp --upgrade
 
-echo "[+] Downloading offshore.zip..."
-curl -L -o offshore.zip https://github.com/Educationservices/offshore/releases/download/Alpha/offshore.zip
+echo "[+] Downloading offshore.zip if not already downloaded..."
 
-echo "[+] Unzipping offshore.zip..."
-unzip offshore.zip
+[ -f offshore.zip ] || curl -L -o offshore.zip https://github.com/Educationservices/offshore/releases/download/Alpha/offshore.zip
 
-echo "[+] Entering extracted folder..."
-cd "youtubeshortsoffline - Copy" || { echo "[!] Folder not found"; exit 1; }
+echo "[+] Unzipping offshore.zip if folder doesn't exist..."
 
-echo "[+] Removing old run_selected.py if it exists..."
-rm -f run_selected.py
+[ -d "youtubeshortsoffline - Copy" ] || unzip offshore.zip
+
+echo "[+] Entering extracted folder..." cd "youtubeshortsoffline - Copy" || { echo "[!] Folder not found"; exit 1; }
+
+echo "[+] Removing old run_selected.py if it exists..." rm -f run_selected.py
 
 echo "[*] Launching builder. Add channels and type 'finished' when done."
-python3.11 builder.py
 
-echo "[+] Moving generated script to YTDLPSCRAP..."
-cp run_selected.py ../YTDLPSCRAP || { echo "[!] run_selected.py not found"; exit 1; }
+python3.11 builder.py echo "[+] Moving and renaming run_selected.py to YTDLPSCRAP/downloader.py..." mv run_selected.py YTDLPSCRAP/downloader.py || { echo "[!] run_selected.py not found"; exit 1; }
 
-echo "[+] Entering YTDLPSCRAP..."
-cd ../YTDLPSCRAP || { echo "[!] YTDLPSCRAP folder not found"; exit 1; }
+echo "[+] Entering YTDLPSCRAP..." cd YTDLPSCRAP || { echo "[!] YTDLPSCRAP folder not found"; exit 1; } echo "[+] Running downloader.py..."
 
-echo "[+] Deleting old downloader.py..."
-rm -f downloader.py
-
-echo "[+] Renaming run_selected.py to downloader.py..."
-mv run_selected.py downloader.py
-
-echo "[+] Running downloader.py..."
 python3.11 downloader.py
