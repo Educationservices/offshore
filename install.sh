@@ -15,6 +15,8 @@ python3.11 -m ensurepip --upgrade
 echo "[+] Installing yt-dlp if not present..."
 python3.11 -m pip show yt-dlp >/dev/null 2>&1 || python3.11 -m pip install yt-dlp --upgrade
 
+pip3.11 install flask
+
 echo "[+] Downloading offshore.zip if not already downloaded..."
 [ -f offshore.zip ] || curl -L -o offshore.zip https://github.com/Educationservices/offshore/releases/download/Alpha0.02/offshore.zip
 
